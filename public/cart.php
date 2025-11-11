@@ -1,0 +1,106 @@
+<?php
+session_start();
+include('../config/db.php');
+include('../public/layout.php');
+ob_start();
+
+// Handle Add to Cart
+if (isset($_GET['action']) && $_GET['action'] == 'add' && isset($_GET['id'])) {
+  $id = intval($_GET['id']);
+
+  // Fetch item details from DB
+  $result = $conn->query("SELECT * FROM food_items WHERE id=$id AND available=1");
+  if ($result && $result->num_rows > 0) {
+    $item = $result->fetch_assoc();
+    if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+    // If item exists in cart, increment quantity
+    if (isset($_SESSION['cart'][$id])) {
+      $_SESSION['cart'][$id]['quantity'] += 1;
+    } else {
+      $_SESSION['cart'][$id] = [
+        'id' => $item['id'],
+        'name' => $item['name'],
+        'price' => $item['price'],
+        'image' => $item['image'],
+        'quantity' => 1
+      ];
+    }
+  }
+  header("Location: cart.php");
+  exit;
+}
+
+// Handle Remove
+if (isset($_GET['action']) && $_GET['action'] == 'remove' && isset($_GET['id'])) {
+  $id = intval($_GET['id']);
+  unset($_SESSION['cart'][$id]);
+  header("Location: cart.php");
+  exit;
+}
+
+// Handle Clear Cart
+if (isset($_GET['action']) && $_GET['action'] == 'clear') {
+  unset($_SESSION['cart']);
+  header("Location: cart.php");
+  exit;
+}
+?>
+
+<div class="container py-5">
+  <h3 class="fw-bold text-danger mb-4"><i class="bi bi-cart3"></i> My Cart</h3>
+
+  <?php if (empty($_SESSION['cart'])): ?>
+    <div class="alert alert-info">Your cart is empty. <a href="index.php">Continue shopping</a>.</div>
+  <?php else: ?>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Image</th>
+            <th>Food Name</th>
+            <th>Price (₹)</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $grand_total = 0;
+          foreach ($_SESSION['cart'] as $item):
+            $item_total = $item['price'] * $item['quantity'];
+            $grand_total += $item_total;
+          ?>
+            <tr>
+              <td><img src="/food_order_system/uploads/<?php echo $item['image']; ?>" width="80" height="60" style="object-fit:cover;"></td>
+              <td><?php echo htmlspecialchars($item['name']); ?></td>
+              <td>₹<?php echo number_format($item['price'], 2); ?></td>
+              <td>
+                <form action="update_quantity.php" method="POST" class="d-flex align-items-center justify-content-center">
+                  <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
+                  <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" min="1" class="form-control text-center" style="width:70px;">
+                </form>
+              </td>
+              <td>₹<?php echo number_format($item_total, 2); ?></td>
+              <td><a href="cart.php?action=remove&id=<?php echo $item['id']; ?>" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a></td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-end mt-3">
+      <h5 class="fw-bold">Grand Total: <span class="text-success">₹<?php echo number_format($grand_total, 2); ?></span></h5>
+      <div class="mt-3">
+        <a href="cart.php?action=clear" class="btn btn-outline-danger me-2"><i class="bi bi-x-circle"></i> Clear Cart</a>
+        <a href="index.php" class="btn btn-outline-secondary me-2"><i class="bi bi-arrow-left"></i> Continue Shopping</a>
+        <a href="checkout.php" class="btn btn-success"><i class="bi bi-credit-card"></i> Proceed to Checkout</a>
+      </div>
+    </div>
+  <?php endif; ?>
+</div>
+
+<?php
+$content = ob_get_clean();
+renderLayout("My Cart", $content);
+?>

@@ -1,0 +1,1 @@
+<h2>Order placed — thank you!</h2><a href='index.php'>Home</a>
