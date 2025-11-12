@@ -27,10 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
   $status = ($payment_method == 'COD') ? 'Pending' : 'Paid';
   $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
-  $conn->query("INSERT INTO orders (user_id, total, status, address, payment_method, created_at)
-                VALUES ($user_id, $total, '$status', '$address', '$payment_method', NOW())");
+  // ✅ Insert order details matching your table structure
+  $query = "INSERT INTO orders (customer_name, email, phone, user_id, total_amount, status, address, payment_method, created_at)
+            VALUES ('$name', '$email', '$phone', $user_id, $total, '$status', '$address', '$payment_method', NOW())";
+  $conn->query($query);
   $order_id = $conn->insert_id;
 
+  // ✅ Insert order items
   foreach ($_SESSION['cart'] as $item) {
     $fid = $item['id'];
     $qty = $item['quantity'];
@@ -50,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
           </div>
         </div>";
   $content = ob_get_clean();
-  renderLayout("Order Success", $content);
+  renderLayout('Order Success', $content);
   exit;
 }
 ?>
@@ -105,10 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
       <div class="card p-4 shadow-sm border-0">
         <h5 class="fw-bold mb-3">Order Summary</h5>
         <ul class="list-group mb-3">
-          <?php
-          foreach ($_SESSION['cart'] as $item):
-            $total = $item['price'] * $item['quantity'];
-          ?>
+          <?php foreach ($_SESSION['cart'] as $item): ?>
+            <?php $total = $item['price'] * $item['quantity']; ?>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div>
                 <strong><?php echo htmlspecialchars($item['name']); ?></strong><br>
@@ -145,18 +146,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
     }
   });
 
+  // Razorpay integration
   payOnlineBtn.onclick = function(e) {
     e.preventDefault();
 
     var options = {
-      "key": "rzp_test_yourKeyHere", // 🔹 Replace with your Razorpay Test Key ID
-      "amount": "<?php echo $grand_total * 100; ?>", // in paise
+      "key": "rzp_test_yourKeyHere", // Replace with your Razorpay Test Key ID
+      "amount": "<?php echo $grand_total * 100; ?>", // amount in paise
       "currency": "INR",
       "name": "FoodKart",
       "description": "Online Food Order Payment",
       "image": "/food_order_system/uploads/logo.png",
       "handler": function(response) {
-        // Redirect to success page with payment ID
         window.location.href = "payment_success.php?payment_id=" + response.razorpay_payment_id;
       },
       "theme": {
