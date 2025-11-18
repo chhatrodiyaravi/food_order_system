@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
   <meta charset="UTF-8">
-  <title>Login - Food Order System</title>
+  <title>Login - FoodKart</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -45,12 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       padding: 2rem;
     }
 
-    .login-card img {
-      width: 60px;
-      display: block;
-      margin: 0 auto 1rem;
-    }
-
     .btn-primary {
       background-color: #1976d2;
       border: none;
@@ -58,21 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     .btn-primary:hover {
       background-color: #1565c0;
-    }
-
-    .social-btn {
-      border: 1px solid #ccc;
-      background-color: #fff;
-      width: 100%;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .social-btn img {
-      width: 20px;
     }
 
     .divider {
@@ -103,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
   <div class="login-card">
-    <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Dot-blue.svg" alt="logo"> -->
+
     <h4 class="text-center mb-2">Sign in</h4>
     <p class="text-center text-muted mb-4">to continue to your account</p>
 
@@ -111,15 +90,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <div class="alert alert-danger py-2"><?php echo $error; ?></div>
     <?php endif; ?>
 
-    <form method="POST">
+    <form method="POST" id="loginForm">
+
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input type="email" name="email" class="form-control" required placeholder="Enter your email">
+        <input type="email" name="email" class="form-control" placeholder="Enter your email">
       </div>
-      <div class="mb-3 position-relative">
+
+      <div class="mb-3">
         <label class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" required placeholder="Enter password" id="password">
+        <input type="password" name="password" class="form-control" placeholder="Enter password">
       </div>
+
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="form-check">
           <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -133,20 +115,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="divider">or</div>
 
-    <!-- <button class="social-btn">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt=""> Continue with Google
-    </button>
-
-    <button class="social-btn">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt=""> Continue with Facebook
-    </button> -->
-
     <p class="text-center mt-3 mb-0 small">
-      Don't have an account? <a href="register.php" class="text-primary text-decoration-none">Create account</a>
+      Don't have an account?
+      <a href="register.php" class="text-primary text-decoration-none">Create account</a>
     </p>
   </div>
 
+  <!-- Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- jQuery Validation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+  <!-- Validation Script -->
+  <script>
+    $(document).ready(function() {
+      $("#loginForm").validate({
+        rules: {
+          email: {
+            required: true,
+            email: true
+          },
+          password: {
+            required: true,
+            minlength: 4
+          }
+        },
+
+        messages: {
+          email: {
+            required: "Please enter your email",
+            email: "Please enter a valid email"
+          },
+          password: {
+            required: "Please enter your password",
+            minlength: "Password must be at least 4 characters long"
+          }
+        },
+
+        errorClass: "text-danger small",
+        errorElement: "div",
+
+        highlight: function(element) {
+          $(element).addClass("is-invalid");
+        },
+        unhighlight: function(element) {
+          $(element).removeClass("is-invalid");
+        }
+      });
+    });
+  </script>
+
 </body>
 
 </html>

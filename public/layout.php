@@ -89,9 +89,11 @@ function renderLayout($title, $content)
                         <li class="nav-item ms-3">
                             <a href="/food_order_system/public/cart.php" class="btn btn-outline-success position-relative">
                                 <i class="bi bi-cart3 fs-5"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    <?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>
-                                </span>
+                                <?php if (isset($_SESSION['user_id']) && isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        <?php echo count($_SESSION['cart']); ?>
+                                    </span>
+                                <?php endif; ?>
                             </a>
                         </li>
 

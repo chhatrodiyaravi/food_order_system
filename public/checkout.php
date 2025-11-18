@@ -168,6 +168,79 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
     rzp1.open();
   };
 </script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+
+    $("#checkoutForm").validate({
+      rules: {
+        name: {
+          required: true,
+          minlength: 3
+        },
+        email: {
+          required: true,
+          email: true
+        },
+        phone: {
+          required: true,
+          digits: true,
+          minlength: 10,
+          maxlength: 10
+        },
+        address: {
+          required: true,
+          minlength: 5
+        },
+        payment_method: {
+          required: true
+        }
+      },
+
+      messages: {
+        name: {
+          required: "Please enter your full name",
+          minlength: "Name must be at least 3 characters"
+        },
+        email: {
+          required: "Please enter email address",
+          email: "Enter a valid email"
+        },
+        phone: {
+          required: "Please enter phone number",
+          digits: "Phone must contain digits only",
+          minlength: "Enter 10-digit phone",
+          maxlength: "Enter 10-digit phone"
+        },
+        address: {
+          required: "Please enter delivery address",
+          minlength: "Address is too short"
+        },
+        payment_method: {
+          required: "Please select a payment method"
+        }
+      },
+
+      errorClass: "text-danger small",
+      errorElement: "div",
+
+      highlight: function(element) {
+        $(element).addClass("is-invalid");
+      },
+
+      unhighlight: function(element) {
+        $(element).removeClass("is-invalid");
+      }
+    });
+
+  });
+</script>
+
 
 <?php
 $content = ob_get_clean();

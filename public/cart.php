@@ -8,6 +8,13 @@ ob_start();
 if (isset($_GET['action']) && $_GET['action'] == 'add' && isset($_GET['id'])) {
   $id = intval($_GET['id']);
 
+  // Require login before accessing cart actions
+  if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php?msg=Please login first to add items to your cart");
+    exit;
+  }
+
+
   // Fetch item details from DB
   $result = $conn->query("SELECT * FROM food_items WHERE id=$id AND available=1");
   if ($result && $result->num_rows > 0) {
