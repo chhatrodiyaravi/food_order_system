@@ -1,7 +1,7 @@
 # Food Order System - Plain PHP Starter
 
 This is a minimal Plain PHP + MySQL starter project for an Online Food Ordering System.
-Includes: user registration/login, menu, cart, checkout (COD + Razorpay online), admin item management, and sample images.
+Includes: user registration/login, menu, cart, checkout, admin item management, and sample images.
 
 ## Setup Steps (XAMPP)
 
@@ -17,10 +17,12 @@ Includes: user registration/login, menu, cart, checkout (COD + Razorpay online),
    - Visit http://localhost/food_order_system/public/
 
 ## Admin user
+
 A small helper `install_admin.php` is provided in the project root to create the admin user.
 Run it once in browser: http://localhost/food_order_system/install_admin.php
 Default admin credentials (set by you when running the script).
 
 ## Notes
+
 - This is a starter. Improve security before production: prepared statements, CSRF, input validation, HTTPS.
 - For Razorpay integration, ensure your keys are set and you test in sandbox mode.

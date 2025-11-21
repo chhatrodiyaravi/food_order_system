@@ -156,6 +156,7 @@ function renderLayout($title, $content)
         </nav>
         <!-- ======= NAVBAR END ======= -->
 
+
         <!-- MAIN PAGE CONTENT -->
         <div class="container py-4">
             <?php echo $content; ?>
