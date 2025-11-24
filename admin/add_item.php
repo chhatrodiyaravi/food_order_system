@@ -1,5 +1,6 @@
 <?php
 include('../config/db.php');
+include('auth_check.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // ✅ make sure the variable is defined even if empty

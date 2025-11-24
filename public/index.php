@@ -38,7 +38,6 @@ ob_start();
 
   </div>
 
-  <!-- Arrows -->
   <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
     <span class="carousel-control-prev-icon"></span>
   </button>
@@ -49,11 +48,11 @@ ob_start();
 
 </div>
 
-<!-- SPACING -->
 <div class="my-4"></div>
 
 <h2 class="fw-bold text-danger mb-3">Welcome to FoodKart</h2>
 <p class="text-muted mb-4">Choose your favorite food and order now 🍕🍔</p>
+
 
 <!-- Fetch Food Items -->
 <?php
@@ -64,30 +63,35 @@ $result = $conn->query("SELECT * FROM food_items WHERE available = 1");
 
   <?php while ($row = $result->fetch_assoc()): ?>
     <div class="col-md-4 mb-4">
-      <div class="card shadow-sm">
+      <div class="card shadow-sm rounded-4 overflow-hidden food-card">
 
-        <img src="/food_order_system/uploads/<?php echo htmlspecialchars($row['image']); ?>"
-          class="card-img-top"
-          style="height:200px;object-fit:cover;"
-          alt="<?php echo htmlspecialchars($row['name']); ?>">
+        <!-- Clickable Image -->
+        <a href="food.php?id=<?php echo $row['id']; ?>">
+          <img src="/food_order_system/uploads/<?php echo htmlspecialchars($row['image']); ?>"
+            class="card-img-top food-image"
+            alt="<?php echo htmlspecialchars($row['name']); ?>">
+        </a>
 
         <div class="card-body text-center">
-          <h5 class="fw-bold"><?php echo htmlspecialchars($row['name']); ?></h5>
+
+          <a href="food.php?id=<?php echo $row['id']; ?>" class="text-decoration-none">
+            <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($row['name']); ?></h5>
+          </a>
+
           <p class="text-muted small mb-2"><?php echo htmlspecialchars($row['description']); ?></p>
+
           <p class="fw-bold text-success fs-5 mb-3">
             ₹<?php echo number_format($row['price'], 2); ?>
           </p>
 
           <?php if (isset($_SESSION['user_id'])): ?>
-            <!-- User is logged in -->
             <a href="/food_order_system/public/cart.php?action=add&id=<?php echo $row['id']; ?>"
-              class="btn btn-success btn-sm px-4">
+              class="btn btn-danger w-100">
               <i class="bi bi-cart-plus"></i> Add to Cart
             </a>
           <?php else: ?>
-            <!-- User not logged in -->
             <a href="/food_order_system/public/login.php?msg=Please login to add items"
-              class="btn btn-outline-secondary btn-sm px-4">
+              class="btn btn-outline-secondary w-100">
               <i class="bi bi-cart-plus"></i> Add to Cart
             </a>
           <?php endif; ?>
@@ -100,8 +104,30 @@ $result = $conn->query("SELECT * FROM food_items WHERE available = 1");
 
 </div>
 
+<!-- Card Hover CSS -->
+<style>
+  .food-card {
+    transition: 0.3s;
+  }
+
+  .food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .food-image {
+    height: 230px;
+    width: 100%;
+    object-fit: cover;
+    transition: 0.3s;
+  }
+
+  .food-card:hover .food-image {
+    transform: scale(1.05);
+  }
+</style>
+
 <?php
-// Get page content & render in layout
 $content = ob_get_clean();
 renderLayout("Home - FoodKart", $content);
 ?>

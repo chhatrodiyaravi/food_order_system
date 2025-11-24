@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('../config/db.php');
+include('auth_check.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $conn->real_escape_string($_POST['name']);
