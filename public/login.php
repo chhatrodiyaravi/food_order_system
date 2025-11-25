@@ -107,17 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <input type="checkbox" class="form-check-input" id="rememberMe">
           <label class="form-check-label" for="rememberMe">Keep me signed in</label>
         </div>
-        <a href="#" class="text-decoration-none small text-primary">Forgot password?</a>
+        <a href="#" class="text-decoration-none small text-danger">Forgot password?</a>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 py-2">SIGN IN</button>
+      <button type="submit" class="btn btn-danger w-100 py-2">SIGN IN</button>
     </form>
 
     <div class="divider">or</div>
 
     <p class="text-center mt-3 mb-0 small">
       Don't have an account?
-      <a href="register.php" class="text-primary text-decoration-none">Create account</a>
+      <a href="register.php" class="text-danger text-decoration-none">Create account</a>
     </p>
   </div>
 

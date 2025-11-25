@@ -46,9 +46,9 @@ $res = $conn->query("SELECT * FROM orders WHERE user_id=$user_id ORDER BY id DES
             <p class="mb-1"><strong>Date:</strong> <?php echo $order['created_at']; ?></p>
             <p class="mb-2"><strong>Address:</strong> <?php echo $order['address']; ?></p>
 
-            <a href="track_my_order.php?id=<?php echo $order['id']; ?>" class="btn btn-outline-danger btn-sm">
+            <!-- <a href="track_my_order.php?id=<?php echo $order['id']; ?>" class="btn btn-outline-danger btn-sm">
                 Track Order
-            </a>
+            </a> -->
 
         </div>
     <?php endwhile; ?>

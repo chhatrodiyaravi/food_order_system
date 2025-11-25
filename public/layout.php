@@ -102,12 +102,10 @@ function renderLayout($title, $content)
 
                         <!-- Dropdown -->
                         <li class="nav-item dropdown mx-1">
-                            <a class="nav-link dropdown-toggle fw-semibold" href="#" id="categoryDropdown"
+                            <a class="nav-link dropdown-toggle fw-semibold" href="category.php" id="categoryDropdown"
                                 role="button" data-bs-toggle="dropdown">
                                 Categories
                             </a>
-
-
 
                             <ul class="dropdown-menu shadow-sm border-0 p-2">
                                 <?php
@@ -191,7 +189,7 @@ function renderLayout($title, $content)
 
                 <!-- Brand -->
                 <div style="width:250px; margin-bottom:30px;">
-                    <h2 style="color:#ffcc00;">FoodieZone</h2>
+                    <h2 style="color:#ffcc00;">FoodKart</h2>
                     <p style="line-height:1.6;">
                         Delicious food delivered fast at your doorstep.
                         Order from a wide range of cuisines with the best offers.

@@ -107,14 +107,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="password" name="password" class="form-control" placeholder="Create password">
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 py-2">CREATE ACCOUNT</button>
+      <button type="submit" class="btn btn-danger w-100 py-2">CREATE ACCOUNT</button>
     </form>
 
     <div class="divider">or</div>
 
     <p class="text-center mt-3 mb-0 small">
       Already have an account?
-      <a href="login.php" class="text-primary text-decoration-none">Sign in</a>
+      <a href="login.php" class="text-danger text-decoration-none">Sign in</a>
     </p>
   </div>
 
