@@ -2,24 +2,55 @@
 session_start();
 include('../config/db.php');
 
+// Auto login using cookie
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_user'])) {
+  $_SESSION['user_id'] = $_COOKIE['remember_user'];
+
+  // Fetch user info again
+  $uid = intval($_COOKIE['remember_user']);
+  $userRes = $conn->query("SELECT * FROM users WHERE id=$uid");
+
+  if ($userRes->num_rows > 0) {
+    $user = $userRes->fetch_assoc();
+    $_SESSION['user_name'] = $user['name'];
+    $_SESSION['role'] = $user['role'];
+  }
+
+  header("Location: index.php");
+  exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $email = $conn->real_escape_string($_POST['email']);
   $password = $_POST['password'];
+  $remember = isset($_POST['remember']);  // checkbox
 
   $res = $conn->query("SELECT * FROM users WHERE email='$email'");
+
   if ($res->num_rows) {
     $user = $res->fetch_assoc();
+
     if (password_verify($password, $user['password'])) {
+
+      // Set session
       $_SESSION['user_id'] = $user['id'];
       $_SESSION['user_name'] = $user['name'];
       $_SESSION['role'] = $user['role'];
+
+      // Keep me signed in — Store cookie for 7 days
+      if ($remember) {
+        setcookie("remember_user", $user['id'], time() + (7 * 24 * 60 * 60), "/");
+      }
+
       header('Location: index.php');
       exit;
     }
   }
+
   $error = "Invalid email or password!";
 }
 ?>
+
 
 <!doctype html>
 <html lang="en">
