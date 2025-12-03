@@ -12,11 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-<<<<<<< HEAD
-
-// Show all orders for this user (COD only - no pending payment status)
-=======
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
 $res = $conn->query("SELECT * FROM orders WHERE user_id=$user_id ORDER BY id DESC");
 ?>
 

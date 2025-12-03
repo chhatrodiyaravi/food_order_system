@@ -12,7 +12,7 @@ ob_start();
                 We'd love to hear from you!
             </p>
 
-            <form method="POST" action="contact.php" class="card shadow p-4 border-0">
+            <form id="contactForm" method="POST" action="contact.php" class="card shadow p-4 border-0">
                 <div class="mb-3">
                     <label class="form-label">Your Name</label>
                     <input type="text" name="name" class="form-control" required>
@@ -55,6 +55,58 @@ ob_start();
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $("#contactForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3
+                },
+
+                email: {
+                    required: true,
+                    email: true
+                },
+
+                message: {
+                    required: true,
+                    minlength: 10
+                }
+            },
+
+            messages: {
+                name: {
+                    required: "Please enter your name",
+                    minlength: "Name must be at least 3 characters"
+                },
+
+                email: {
+                    required: "Please enter your email",
+                    email: "Enter a valid email address"
+                },
+
+                message: {
+                    required: "Please enter your message",
+                    minlength: "Message must be at least 10 characters long"
+                }
+            },
+
+            errorClass: "text-danger",
+            errorElement: "small",
+            highlight: function(element) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function(element) {
+                $(element).removeClass("is-invalid");
+            }
+        });
+
+    });
+</script>
 
 <?php
 $content = ob_get_clean();

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
   // ✅ Insert order items
   foreach ($_SESSION['cart'] as $item) {
     $fid = $item['id'];
-    $qty = $item['quantity']
+    $qty = $item['quantity'];
     $price = $item['price'];
     $conn->query("INSERT INTO order_items (order_id, food_id, quantity, price)
                   VALUES ($order_id,$fid,$qty,$price)");
