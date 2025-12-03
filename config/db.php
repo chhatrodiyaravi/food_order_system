@@ -1,0 +1,14 @@
+<?php
+
+// Load environment variables from .env file
+require_once __DIR__ . '/env_loader.php';
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "food_order_db";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
