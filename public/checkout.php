@@ -16,30 +16,12 @@ foreach ($_SESSION['cart'] as $item) {
   $grand_total += $item['price'] * $item['quantity'];
 }
 
-<<<<<<< HEAD
-// Handle order placement
-=======
 // Handle COD order placement
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
   $name = $conn->real_escape_string($_POST['name']);
   $email = $conn->real_escape_string($_POST['email']);
   $phone = $conn->real_escape_string($_POST['phone']);
   $address = $conn->real_escape_string($_POST['address']);
-<<<<<<< HEAD
-  $total = $grand_total;
-  $status = 'Pending';
-  $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
-
-  // Insert order
-  $query = "INSERT INTO orders (customer_name, email, phone, user_id, total_amount, status, address, payment_method, created_at)
-            VALUES ('$name', '$email', '$phone', $user_id, $total, '$status', '$address', 'COD', NOW())";
-  $conn->query($query);
-  $order_id = $conn->insert_id;
-
-  // Insert order items
-  $items_list = "";
-=======
   $payment_method = $_POST['payment_method'];
   $total = $grand_total;
   $status = ($payment_method == 'COD') ? 'Pending' : 'Paid';
@@ -52,42 +34,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
   $order_id = $conn->insert_id;
 
   // ✅ Insert order items
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
   foreach ($_SESSION['cart'] as $item) {
     $fid = $item['id'];
-    $qty = $item['quantity'];
+    $qty = $item['quantity']
     $price = $item['price'];
-<<<<<<< HEAD
-    $conn->query("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES ($order_id,$fid,$qty,$price)");
-    $items_list .= $item['name'] . " (x{$qty}), ";
-  }
-  $items_list = rtrim($items_list, ", ");
-
-  // Update order items summary
-  $conn->query("UPDATE orders SET items='$items_list' WHERE id=$order_id");
-
-  // Show success
-  unset($_SESSION['cart']);
-=======
     $conn->query("INSERT INTO order_items (order_id, food_id, quantity, price)
                   VALUES ($order_id,$fid,$qty,$price)");
   }
 
   unset($_SESSION['cart']);
 
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
   echo "<div class='container py-5 text-center'>
           <div class='alert alert-success shadow-sm'>
             <h4 class='fw-bold text-success mb-2'>🎉 Order Placed Successfully!</h4>
             <p>Your Order ID: <strong>#{$order_id}</strong></p>
-<<<<<<< HEAD
-            <p>Payment Method: <strong>Cash on Delivery</strong></p>
-            <p>Thank you for ordering with FoodKart.</p>
-            <a href='my_orders.php' class='btn btn-danger mt-3'>View My Orders</a>
-=======
             <p>Thank you for ordering with FoodKart.</p>
             <a href='index.php' class='btn btn-danger mt-3'>Back to Home</a>
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
           </div>
         </div>";
   $content = ob_get_clean();
@@ -122,14 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
 
           <div class="mb-3">
             <label class="form-label">Delivery Address</label>
-<<<<<<< HEAD
-            <textarea name="address" class="form-control" rows="3" required></textarea>
-          </div>
-
-          <button type="submit" name="place_order" class="btn btn-danger w-100 py-2 fw-bold">
-            <i class="bi bi-check-circle"></i> Place Order
-          </button>
-=======
             <textarea name="address" rows="3" class="form-control" required></textarea>
           </div>
 
@@ -145,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
             <button type="submit" name="place_order" id="codBtn" class="btn btn-danger px-4">Place COD Order</button>
             <button type="button" id="payOnlineBtn" class="btn btn-success px-4 d-none">Pay Online</button>
           </div>
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
         </form>
       </div>
     </div>
@@ -154,38 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
     <div class="col-md-5">
       <div class="card p-4 shadow-sm border-0">
         <h5 class="fw-bold mb-3">Order Summary</h5>
-<<<<<<< HEAD
-
-        <div style="max-height: 300px; overflow-y: auto;">
-          <?php foreach ($_SESSION['cart'] as $item): ?>
-            <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
-              <div>
-                <p class="mb-0"><strong><?php echo htmlspecialchars($item['name']); ?></strong></p>
-                <small class="text-muted">₹<?php echo number_format($item['price'], 2); ?> x <?php echo $item['quantity']; ?></small>
-              </div>
-              <p class="mb-0 fw-bold">₹<?php echo number_format($item['price'] * $item['quantity'], 2); ?></p>
-            </div>
-          <?php endforeach; ?>
-        </div>
-
-        <div class="mt-3 pt-3 border-top">
-          <div class="d-flex justify-content-between mb-2">
-            <p class="mb-0">Subtotal:</p>
-            <p class="mb-0">₹<?php echo number_format($grand_total, 2); ?></p>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <p class="mb-0">Delivery:</p>
-            <p class="mb-0 text-success">FREE</p>
-          </div>
-          <div class="d-flex justify-content-between fs-5 fw-bold">
-            <p>Total:</p>
-            <p class="text-danger">₹<?php echo number_format($grand_total, 2); ?></p>
-          </div>
-        </div>
-
-        <div class="alert alert-info mt-3 mb-0">
-          <small><i class="bi bi-info-circle"></i> Payment on Delivery (COD) - Pay when you receive your order</small>
-=======
         <ul class="list-group mb-3">
           <?php foreach ($_SESSION['cart'] as $item): ?>
             <?php $total = $item['price'] * $item['quantity']; ?>
@@ -201,18 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
         <div class="d-flex justify-content-between">
           <h5>Total:</h5>
           <h5 class="text-success fw-bold">₹<?php echo number_format($grand_total, 2); ?></h5>
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<<<<<<< HEAD
-<?php
-$content = ob_get_clean();
-renderLayout('Checkout', $content);
-=======
 <!-- Razorpay Script -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
@@ -330,5 +245,4 @@ renderLayout('Checkout', $content);
 <?php
 $content = ob_get_clean();
 renderLayout("Checkout", $content);
->>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
 ?>
