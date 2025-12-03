@@ -12,6 +12,7 @@ Includes: user registration/login, menu, cart, checkout, admin item management, 
    - Create database named `food_order_db`
 4. Import SQL file `database/food_order_db.sql` (provided).
 5. Update `config/db.php` if your DB credentials differ.
+<<<<<<< HEAD
 6. **Cashfree Payment Gateway Setup:**
    - The project now uses Cashfree for online payments
    - Configuration is in `config/cashfree.php`
@@ -21,6 +22,10 @@ Includes: user registration/login, menu, cart, checkout, admin item management, 
    - Import `database/migration_cashfree.sql` to add payment-related columns
    - Run in phpMyAdmin or MySQL console
 8. Run the site:
+=======
+6. Add your Razorpay test keys in `config/razorpay.php`.
+7. Run the site:
+>>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
    - Visit http://localhost/food_order_system/public/
 
 ## Admin user
@@ -32,6 +37,10 @@ Default admin credentials (set by you when running the script).
 ## Notes
 
 - This is a starter. Improve security before production: prepared statements, CSRF, input validation, HTTPS.
+<<<<<<< HEAD
 - Payment Gateway: Uses Cashfree for online payments (sandbox mode by default)
 - Password Reset: Email-based password reset functionality included
 - Admin: Default admin user can be created using `install_admin.php`
+=======
+- For Razorpay integration, ensure your keys are set and you test in sandbox mode.
+>>>>>>> 0d6c4840b28b5f5cc20de54d3139d2c149f02ca1
