@@ -1,0 +1,10 @@
+# Normalize line endings across the repository
+* text=auto
+
+# Force PHP files to use CRLF on Windows
+*.php text eol=crlf
+
+# Keep .env out of version control
+.env
+.env.example
+.env.*
