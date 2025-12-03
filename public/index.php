@@ -32,7 +32,7 @@ ob_start();
       <img src="/food_order_system/uploads/slider3.jpg" class="d-block w-100 hero-img">
       <div class="carousel-caption d-none d-md-block">
         <h1 class="fw-bold display-5">Fastest Delivery in Your City</h1>
-        <p>Fresh, hot & tasty food delivered quickly</p>
+        <p>Fresh, hot & tasty food delivered quickly 🛵🔥</p>
       </div>
     </div>
 
