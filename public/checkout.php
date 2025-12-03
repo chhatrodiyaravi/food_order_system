@@ -49,9 +49,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
             <h4 class='fw-bold text-success mb-2'>🎉 Order Placed Successfully!</h4>
             <p>Your Order ID: <strong>#{$order_id}</strong></p>
             <p>Thank you for ordering with FoodKart.</p>
+
             <a href='index.php' class='btn btn-danger mt-3'>Back to Home</a>
+
+            <!-- ✅ Pass order_id to cancel_order.php -->
+            <a href='cancel_order.php?id={$order_id}' 
+               class='btn btn-outline-danger mt-3'
+               onclick=\"return confirm('Are you sure you want to cancel this order?');\">
+               Cancel Order
+            </a>
           </div>
-        </div>";
+      </div>";
+
   $content = ob_get_clean();
   renderLayout('Order Success', $content);
   exit;
