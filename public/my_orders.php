@@ -46,9 +46,16 @@ $res = $conn->query("SELECT * FROM orders WHERE user_id=$user_id ORDER BY id DES
             <p class="mb-1"><strong>Date:</strong> <?php echo $order['created_at']; ?></p>
             <p class="mb-2"><strong>Address:</strong> <?php echo $order['address']; ?></p>
 
-            <!-- <a href="track_my_order.php?id=<?php echo $order['id']; ?>" class="btn btn-outline-danger btn-sm">
-                Track Order
-            </a> -->
+
+            <!-- ✅ Cancel Button (Only for Pending Orders) -->
+            <?php if ($order['status'] == 'Pending'): ?>
+                <a href="cancel_order.php?id=<?php echo $order['id']; ?>"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Are you sure you want to cancel this order?');">
+                    Cancel Order
+                </a>
+            <?php endif; ?>
+
 
         </div>
     <?php endwhile; ?>
