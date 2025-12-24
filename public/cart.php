@@ -20,6 +20,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'add' && isset($_GET['id'])) {
   if ($result && $result->num_rows > 0) {
     $item = $result->fetch_assoc();
 
+    // compute discounted price if applicable
+    $price = floatval($item['price']);
+    if (isset($item['discount_active']) && $item['discount_active'] == 1 && isset($item['discount_percent']) && $item['discount_percent'] > 0) {
+      $price = round($price * (1 - floatval($item['discount_percent']) / 100), 2);
+    }
+
     if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
     if (isset($_SESSION['cart'][$id])) {
@@ -28,7 +34,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'add' && isset($_GET['id'])) {
       $_SESSION['cart'][$id] = [
         'id' => $item['id'],
         'name' => $item['name'],
-        'price' => $item['price'],
+        'price' => $price,
         'image' => $item['image'],
         'quantity' => 1
       ];

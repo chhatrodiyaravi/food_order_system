@@ -8,6 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $name = $conn->real_escape_string($_POST['name']);
   $desc = $conn->real_escape_string($_POST['description']);
   $price = floatval($_POST['price']);
+  $discount_percent = isset($_POST['discount_percent']) ? floatval($_POST['discount_percent']) : 0.00;
+  $discount_active = isset($_POST['discount_active']) ? 1 : 0;
   $img = '';
 
   if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -17,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   // ✅ insert only if category_id > 0
   if ($category_id > 0) {
-    $sql = "INSERT INTO food_items (category_id, name, description, price, image)
-            VALUES ('$category_id', '$name', '$desc', $price, '$img')";
+    $sql = "INSERT INTO food_items (category_id, name, description, price, image, discount_percent, discount_active)
+          VALUES ('$category_id', '$name', '$desc', $price, '$img', $discount_percent, $discount_active)";
     if ($conn->query($sql)) {
       header('Location: index.php');
       exit;
@@ -71,6 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="mb-3">
           <label class="form-label">Price (₹)</label>
           <input type="number" name="price" class="form-control" required step="0.01">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Discount Percent (%)</label>
+          <input type="number" name="discount_percent" class="form-control" step="0.01" min="0" max="100" value="0.00">
+        </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" name="discount_active" class="form-check-input" id="discountActive">
+          <label for="discountActive" class="form-check-label">Enable Discount</label>
         </div>
 
         <div class="mb-3">

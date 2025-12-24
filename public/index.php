@@ -62,6 +62,13 @@ $result = $conn->query("SELECT * FROM food_items WHERE available = 1");
 <div class="row">
 
   <?php while ($row = $result->fetch_assoc()): ?>
+    <?php
+    // fetch average rating for listing badge
+    $r_q = $conn->query("SELECT AVG(rating) AS avg_rating, COUNT(*) AS cnt FROM ratings WHERE food_id=" . intval($row['id']));
+    $r_data = $r_q ? $r_q->fetch_assoc() : ['avg_rating' => 0, 'cnt' => 0];
+    $r_avg = round(floatval($r_data['avg_rating']), 1);
+    $r_cnt = intval($r_data['cnt']);
+    ?>
     <div class="col-md-4 mb-4">
       <div class="card shadow-sm rounded-4 overflow-hidden food-card">
 
@@ -80,8 +87,33 @@ $result = $conn->query("SELECT * FROM food_items WHERE available = 1");
 
           <p class="text-muted small mb-2"><?php echo htmlspecialchars($row['description']); ?></p>
 
+          <?php
+          $price = floatval($row['price']);
+          $discounted_price = $price;
+          if (isset($row['discount_active']) && $row['discount_active'] == 1 && isset($row['discount_percent']) && $row['discount_percent'] > 0) {
+            $discounted_price = round($price * (1 - floatval($row['discount_percent']) / 100), 2);
+          }
+          ?>
+          <?php if ($r_cnt > 0): ?>
+            <p class="small mb-1">
+              <?php $stars = intval(round($r_avg));
+              for ($i = 1; $i <= 5; $i++): ?>
+                <i class="bi <?php echo ($i <= $stars) ? 'bi-star-fill text-warning' : 'bi-star text-muted'; ?>"></i>
+              <?php endfor; ?>
+              <span class="ms-2 small text-muted">(<?php echo $r_cnt; ?>)</span>
+            </p>
+          <?php else: ?>
+            <p class="small text-muted mb-1">Not rated</p>
+          <?php endif; ?>
+
           <p class="fw-bold text-success fs-5 mb-3">
-            ₹<?php echo number_format($row['price'], 2); ?>
+            <?php if ($discounted_price < $price): ?>
+              <span class="text-decoration-line-through text-muted">₹<?php echo number_format($price, 2); ?></span>
+              <span class="ms-2">₹<?php echo number_format($discounted_price, 2); ?></span>
+              <small class="badge bg-danger ms-2"><?php echo htmlspecialchars($row['discount_percent']); ?>% OFF</small>
+            <?php else: ?>
+              ₹<?php echo number_format($price, 2); ?>
+            <?php endif; ?>
           </p>
 
           <?php if (isset($_SESSION['user_id'])): ?>

@@ -21,6 +21,20 @@ function renderLayout($title, $content)
 
         <!-- Custom CSS -->
         <style>
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .container.content-wrapper {
+                flex: 1;
+            }
+
             .navbar-nav .nav-link {
                 font-weight: 500;
                 padding: 8px 14px;
@@ -179,8 +193,8 @@ function renderLayout($title, $content)
 
 
         <!-- MAIN PAGE CONTENT -->
-        <div class="container py-4">
-            <?php echo $content; ?>
+        <div class="container py-4 content-wrapper">
+            <?= $content ?>
         </div>
 
         <!-- ================== FOOTER ================== -->

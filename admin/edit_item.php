@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $conn->real_escape_string($_POST['name']);
     $desc = $conn->real_escape_string($_POST['description']);
     $price = floatval($_POST['price']);
+    $discount_percent = isset($_POST['discount_percent']) ? floatval($_POST['discount_percent']) : 0.00;
+    $discount_active = isset($_POST['discount_active']) ? 1 : 0;
 
     $image = $item['image'];
     if (!empty($_FILES['image']['name'])) {
@@ -28,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             name='$name',
             description='$desc',
             price=$price,
+            discount_percent=$discount_percent,
+            discount_active=$discount_active,
             image='$image',
             available=$available
             WHERE id=$id";
@@ -76,6 +80,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label class="form-label mt-3">Price</label>
         <input type="number" name="price" class="form-control"
             value="<?php echo $item['price']; ?>" required step="0.01">
+
+        <label class="form-label mt-3">Discount Percent (%)</label>
+        <input type="number" name="discount_percent" class="form-control"
+            value="<?php echo isset($item['discount_percent']) ? $item['discount_percent'] : '0.00'; ?>" step="0.01" min="0" max="100">
+
+        <label class="form-check mt-3">
+            <input type="checkbox" name="discount_active" class="form-check-input"
+                <?php echo (isset($item['discount_active']) && $item['discount_active'] == 1) ? 'checked' : ''; ?>>
+            Enable Discount
+        </label>
 
         <label class="form-label mt-3">Image</label>
         <input type="file" name="image" class="form-control">

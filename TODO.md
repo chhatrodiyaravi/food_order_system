@@ -1,0 +1,4 @@
+- [ ] Update navbar with gradient background and modern styling
+- [ ] Enhance footer with better layout and social media icons
+- [ ] Improve overall CSS for professional look
+- [ ] Add FontAwesome for icons
